@@ -8,7 +8,12 @@
     <link rel="icon" type="image/svg+xml"
         href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237c9cff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'/%3E%3Cpolyline points='14 2 14 8 20 8'/%3E%3Cline x1='16' y1='13' x2='8' y2='13'/%3E%3Cline x1='16' y1='17' x2='8' y2='17'/%3E%3C/svg%3E" />
     <link rel="alternate icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="shortcut icon" href="/images/favicon.ico" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#4f46e5" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="ResumeStudio" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <style>
         :root,
@@ -426,6 +431,7 @@
                 transform: translateY(50px);
                 opacity: 0;
             }
+
             to {
                 transform: translateY(0);
                 opacity: 1;
@@ -595,10 +601,12 @@
                 transform: scale(0.5) translateY(12px);
                 opacity: 0.3;
             }
+
             65% {
                 transform: scale(1.15) translateY(-3px);
                 opacity: 1;
             }
+
             100% {
                 transform: scale(1) translateY(0);
                 opacity: 1;
@@ -610,10 +618,12 @@
                 transform: scale(0.5) rotate(-30deg);
                 opacity: 0;
             }
+
             65% {
                 transform: scale(1.2) rotate(8deg);
                 opacity: 1;
             }
+
             100% {
                 transform: scale(1) rotate(0deg);
                 opacity: 1;
@@ -627,10 +637,13 @@
         }
 
         @keyframes lightningPulse {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: scale(1) rotate(0deg);
                 filter: drop-shadow(0 0 4px #eab308);
             }
+
             50% {
                 transform: scale(1.3) rotate(12deg);
                 filter: drop-shadow(0 0 12px #f59e0b);
@@ -638,17 +651,27 @@
         }
 
         @keyframes fabGlowPulse {
-            0%, 100% {
+
+            0%,
+            100% {
                 box-shadow: 0 10px 24px rgba(124, 156, 255, 0.48), inset 0 2px 4px rgba(255, 255, 255, 0.35);
             }
+
             50% {
                 box-shadow: 0 14px 30px rgba(124, 156, 255, 0.68), inset 0 2px 6px rgba(255, 255, 255, 0.5);
             }
         }
 
         @keyframes activeTabIconPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.14); }
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.14);
+            }
         }
 
         /* Global Utility & Modal Styles */
@@ -662,13 +685,15 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(8px);
-            z-index: 2000;
+            background: rgba(0, 0, 0, 0.82);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 99999 !important;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 16px;
+            box-sizing: border-box;
         }
 
         .modal-box {
@@ -682,9 +707,24 @@
             display: flex;
             flex-direction: column;
             gap: 16px;
-            max-height: 90vh;
+            max-height: 88vh;
             overflow-y: auto;
             animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 640px) {
+            .modal-backdrop {
+                padding: 12px 12px 90px 12px !important;
+                align-items: flex-start !important;
+                overflow-y: auto;
+            }
+
+            .modal-box {
+                max-height: calc(100vh - 110px) !important;
+                padding: 16px !important;
+                margin-top: 6px;
+            }
         }
 
         @keyframes modalFadeIn {
@@ -897,11 +937,11 @@
     <!-- Fixed Bottom Bar: Curved Animated Dock with Dynamic Active Tab Notch Cutout -->
     {% set notch_x = 50 %}
     {% if active_page == 'templates' %}
-        {% set notch_x = 150 %}
+    {% set notch_x = 150 %}
     {% elif active_page == 'saved' %}
-        {% set notch_x = 250 %}
+    {% set notch_x = 250 %}
     {% elif active_page == 'help' %}
-        {% set notch_x = 350 %}
+    {% set notch_x = 350 %}
     {% endif %}
 
     <div class="fixed-bottom-bar">
@@ -910,12 +950,13 @@
                 <path id="dockPath" class="dock-path"
                     d="M 0,16 Q 0,0 16,0 L {{ (notch_x - 32)|round(1) }},0 C {{ (notch_x - 20)|round(1) }},0 {{ (notch_x - 16)|round(1) }},32 {{ notch_x|round(1) }},32 C {{ (notch_x + 16)|round(1) }},32 {{ (notch_x + 20)|round(1) }},0 {{ (notch_x + 32)|round(1) }},0 L 384,0 Q 400,0 400,16 L 400,64 L 0,64 Z" />
             </svg>
-            
+
             <div class="dock-content">
-                <a href="/" class="bottom-nav-tab {% if active_page == 'home' %}active{% endif %}" onclick="setActiveNavTab(0)">
+                <a href="/" class="bottom-nav-tab {% if active_page == 'home' %}active{% endif %}"
+                    onclick="setActiveNavTab(0)">
                     <div class="nav-tab-icon">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                             <polyline points="9 22 9 12 15 12 15 22"></polyline>
                         </svg>
@@ -923,10 +964,11 @@
                     <span>Home</span>
                 </a>
 
-                <a href="/templates" class="bottom-nav-tab {% if active_page == 'templates' %}active{% endif %}" onclick="setActiveNavTab(1)">
+                <a href="/templates" class="bottom-nav-tab {% if active_page == 'templates' %}active{% endif %}"
+                    onclick="setActiveNavTab(1)">
                     <div class="nav-tab-icon">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                             <polyline points="14 2 14 8 20 8"></polyline>
                             <line x1="16" y1="13" x2="8" y2="13"></line>
@@ -936,20 +978,22 @@
                     <span>Template</span>
                 </a>
 
-                <a href="/saved" class="bottom-nav-tab {% if active_page == 'saved' %}active{% endif %}" onclick="setActiveNavTab(2)">
+                <a href="/saved" class="bottom-nav-tab {% if active_page == 'saved' %}active{% endif %}"
+                    onclick="setActiveNavTab(2)">
                     <div class="nav-tab-icon">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
                         </svg>
                     </div>
                     <span>Saved</span>
                 </a>
 
-                <a href="/help" class="bottom-nav-tab {% if active_page == 'help' %}active{% endif %}" onclick="setActiveNavTab(3)">
+                <a href="/help" class="bottom-nav-tab {% if active_page == 'help' %}active{% endif %}"
+                    onclick="setActiveNavTab(3)">
                     <div class="nav-tab-icon">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                            stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="10"></circle>
                             <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3.5 0 1.5-1.5 2-1.5 2"></path>
                             <circle cx="12" cy="17" r="0.75" fill="currentColor"></circle>
@@ -962,21 +1006,37 @@
     </div>
 
     <script>
-        function setActiveNavTab(index) {
-            const centers = [50, 150, 250, 350];
-            const X = centers[index] !== undefined ? centers[index] : 50;
+        function updateDockNotch() {
+            const tabs = document.querySelectorAll('.bottom-nav-tab');
+            const dockContent = document.querySelector('.dock-content');
+            const dockPath = document.getElementById('dockPath');
+            if (!tabs.length || !dockContent || !dockPath) return;
+
+            let activeIndex = -1;
+            tabs.forEach((tab, i) => {
+                if (tab.classList.contains('active')) activeIndex = i;
+            });
+            if (activeIndex === -1) activeIndex = 0;
+
+            const dockRect = dockContent.getBoundingClientRect();
+            const activeTab = tabs[activeIndex];
+            const tabRect = activeTab.getBoundingClientRect();
+
+            // Compute relative center X coordinate mapped to 400 SVG viewBox width
+            const relativeX = (tabRect.left + tabRect.width / 2) - dockRect.left;
+            const X = Math.max(35, Math.min(365, (relativeX / dockRect.width) * 400));
+
             const x1 = Math.max(16, X - 32);
             const x2 = X - 16;
             const x3 = X;
             const x4 = X + 16;
             const x5 = Math.min(384, X + 32);
-            const d = `M 0,16 Q 0,0 16,0 L ${x1.toFixed(1)},0 C ${(X-20).toFixed(1)},0 ${x2.toFixed(1)},32 ${x3.toFixed(1)},32 C ${x4.toFixed(1)},32 ${(X+20).toFixed(1)},0 ${x5.toFixed(1)},0 L 384,0 Q 400,0 400,16 L 400,64 L 0,64 Z`;
-            
-            const dockPath = document.getElementById('dockPath');
-            if (dockPath) {
-                dockPath.setAttribute('d', d);
-            }
+            const d = `M 0,16 Q 0,0 16,0 L ${x1.toFixed(1)},0 C ${(X - 20).toFixed(1)},0 ${x2.toFixed(1)},32 ${x3.toFixed(1)},32 C ${(X + 20).toFixed(1)},32 ${(X + 20).toFixed(1)},0 ${x5.toFixed(1)},0 L 384,0 Q 400,0 400,16 L 400,64 L 0,64 Z`;
 
+            dockPath.setAttribute('d', d);
+        }
+
+        function setActiveNavTab(index) {
             const tabs = document.querySelectorAll('.bottom-nav-tab');
             tabs.forEach((tab, i) => {
                 if (i === index) {
@@ -985,7 +1045,12 @@
                     tab.classList.remove('active');
                 }
             });
+            requestAnimationFrame(updateDockNotch);
         }
+
+        window.addEventListener('resize', updateDockNotch);
+        window.addEventListener('load', updateDockNotch);
+        document.addEventListener('DOMContentLoaded', updateDockNotch);
     </script>
 
     <!-- App Download Modal -->
@@ -1004,9 +1069,11 @@
             </div>
             <div style="display: flex; flex-direction: column; gap: 16px;">
                 <p style="color: var(--muted); font-size: 14px; line-height: 1.6; margin: 0;">
-                    Install <strong>ResumeStudio</strong> directly to your Android, iOS, or Desktop device for 1-click launch & real-time resume generation!
+                    Install <strong>ResumeStudio</strong> directly to your Android, iOS, or Desktop device for 1-click
+                    launch & real-time resume generation!
                 </p>
-                <div class="help-box" style="display: flex; flex-direction: column; gap: 12px; border-color: var(--primary);">
+                <div class="help-box"
+                    style="display: flex; flex-direction: column; gap: 12px; border-color: var(--primary);">
                     <button id="pwaInstallTriggerBtn" onclick="triggerPWAInstall()"
                         style="background: linear-gradient(135deg, var(--primary), var(--primary-2)); color: white; border: none; padding: 11px 18px; border-radius: 10px; font-weight: 600; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
                         ⚡ Install App Now
@@ -1095,13 +1162,13 @@ Results-driven Software Engineer with hands-on experience in building scalable w
                             icon: '/favicon.ico',
                             badge: '/favicon.ico'
                         });
-                    } catch(e) {}
+                    } catch (e) { }
                 } else if (Notification.permission !== "denied") {
                     Notification.requestPermission();
                 }
             }
             if (navigator.vibrate) {
-                try { navigator.vibrate([200, 100, 200]); } catch(e){}
+                try { navigator.vibrate([200, 100, 200]); } catch (e) { }
             }
         }
 
@@ -1241,6 +1308,34 @@ Results-driven Software Engineer with hands-on experience in building scalable w
                 Notification.requestPermission();
             }
         }, { once: true });
+
+        // PWA Native Installation Handler
+        let deferredPrompt = null;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        window.triggerPWAInstall = function() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        showGlobalToast('✨ App Installed', 'ResumeStudio added to home screen!');
+                    }
+                    deferredPrompt = null;
+                });
+            } else {
+                showGlobalToast('📱 Install Instructions', 'Tap your browser menu (⋮ or Share) and select "Add to Home Screen" or "Install App".');
+            }
+        };
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW reg error', err));
+            });
+        }
     </script>
     {% block scripts %}{% endblock %}
 </body>

@@ -1,0 +1,17 @@
+{
+  "name": "ResumeStudio — ATS Resume Generator",
+  "short_name": "ResumeStudio",
+  "description": "ATS-Optimized Resume Generator & LaTeX Library",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0f17",
+  "theme_color": "#4f46e5",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}
