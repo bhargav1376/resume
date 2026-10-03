@@ -43,18 +43,7 @@ except Exception:
 file_metadata = {}
 
 # Real-time App Notifications Queue
-app_notifications = [
-    {
-        'id': 'notif_welcome',
-        'title': '🚀 Welcome to ResumeStudio!',
-        'message': 'Generate ATS-optimized resumes & manage LaTeX templates in real time.',
-        'type': 'info',
-        'action_url': None,
-        'time': datetime.now().strftime('%I:%M %p'),
-        'read': False,
-        'timestamp': time.time()
-    }
-]
+app_notifications = []
 
 def push_app_notification(title: str, message: str, notif_type: str = 'info', action_url: str = None):
     notif = {
@@ -973,6 +962,14 @@ def clear_notifications_api():
     global app_notifications
     app_notifications = []
     return jsonify({'success': True, 'notifications': [], 'unread_count': 0})
+
+
+@app.route('/api/notifications/delete/<notif_id>', methods=['POST', 'DELETE'])
+def delete_notification_api(notif_id):
+    global app_notifications
+    app_notifications = [n for n in app_notifications if n.get('id') != notif_id]
+    unread_count = sum(1 for n in app_notifications if not n.get('read'))
+    return jsonify({'success': True, 'notifications': app_notifications, 'unread_count': unread_count})
 
 
 @app.route('/compile-template', methods=['POST'])

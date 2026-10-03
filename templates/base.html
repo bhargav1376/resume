@@ -96,8 +96,8 @@
         }
 
         .app {
-            max-width: 1000px;
-            width: 100%;
+            width: 80%;
+            max-width: 1200px;
             display: flex;
             flex-direction: column;
             gap: clamp(12px, 2vw, 18px);
@@ -106,14 +106,24 @@
             overflow-x: hidden;
         }
 
+        @media (max-width: 768px) {
+            body {
+                padding-top: clamp(20px, 5vw, 32px) !important;
+            }
+
+            .app {
+                width: 94%;
+            }
+        }
+
         /* Header */
         .header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             gap: 12px;
-            padding-bottom: 6px;
+            padding: 12px 16px 8px 16px;
             width: 100%;
             max-width: 100%;
             box-sizing: border-box;
@@ -123,6 +133,8 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            flex: 1;
+            min-width: 0;
         }
 
         .logo {
@@ -198,40 +210,53 @@
         }
 
         .small {
-            font-size: clamp(12px, 1.8vw, 13.5px);
+            font-size: clamp(9px, 1.8vw, 13.5px);
             color: var(--muted);
         }
 
-        /* Animated Theme Button */
-        .theme-toggle-btn {
+        /* Pixel Perfect Header Controls Container */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: auto;
+        }
+
+        /* Animated Theme & Header Buttons */
+        .theme-toggle-btn,
+        .header-action-btn {
             background: var(--panel);
             border: 2px solid var(--border);
             color: var(--primary);
-            width: 46px;
-            height: 46px;
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
             border-radius: 14px;
             display: grid;
             place-items: center;
             cursor: pointer;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
             padding: 0;
-            min-width: auto;
-            margin-left: auto;
-            transition: all 0.3s ease;
+            position: relative;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        [data-theme="light"] .theme-toggle-btn {
+        [data-theme="light"] .theme-toggle-btn,
+        [data-theme="light"] .header-action-btn {
             background: #1e293b;
             border-color: #334155;
-            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.25);
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.2);
         }
 
-        .theme-toggle-btn:hover {
-            transform: scale(1.12) rotate(15deg);
+        .theme-toggle-btn:hover,
+        .header-action-btn:hover {
+            transform: scale(1.1) rotate(6deg);
             border-color: var(--primary);
+            box-shadow: 0 8px 20px rgba(124, 156, 255, 0.35);
         }
 
-        .theme-toggle-btn:active {
+        .theme-toggle-btn:active,
+        .header-action-btn:active {
             transform: scale(0.92);
         }
 
@@ -245,6 +270,353 @@
             stroke: #818cf8 !important;
             fill: rgba(129, 140, 248, 0.3) !important;
             color: #818cf8 !important;
+        }
+
+        /* Glowing Animated Sparkle ✨ Icon */
+        .animated-sparkle-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #fbbf24;
+            animation: sparkleGlowPulse 2.4s ease-in-out infinite alternate;
+            transform-origin: center;
+            vertical-align: middle;
+            margin-right: 4px;
+        }
+
+        .animated-sparkle-icon svg {
+            filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.75));
+        }
+
+        /* Generate Resume Sparkle - Mixed White & Soft Light Yellow Glow */
+        .animated-sparkle-icon.generate-sparkle {
+            color: #fef08a !important;
+        }
+
+        .animated-sparkle-icon.generate-sparkle svg {
+            fill: #ffffff !important;
+            filter: drop-shadow(0 0 6px rgba(211, 211, 210, 0.95)) drop-shadow(0 0 3px #ffffff) !important;
+        }
+
+        @keyframes sparkleGlowPulse {
+            0% {
+                transform: scale(0.94) rotate(-6deg);
+                filter: drop-shadow(0 0 3px rgba(251, 191, 36, 0.4));
+            }
+
+            50% {
+                transform: scale(1.18) rotate(8deg);
+                filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.95));
+            }
+
+            100% {
+                transform: scale(1.02) rotate(0deg);
+                filter: drop-shadow(0 0 5px rgba(251, 191, 36, 0.6));
+            }
+        }
+
+        /* Stylish Post-Download & PDF View Button with Gradient Background */
+        .btn-view-pdf {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #c084fc 100%) !important;
+            color: #ffffff !important;
+            font-weight: 700 !important;
+            border: none !important;
+            padding: 8px 18px;
+            border-radius: 12px !important;
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4) !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+            cursor: pointer !important;
+            text-decoration: none !important;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-view-pdf:hover {
+            transform: translateY(-2px) scale(1.04) !important;
+            box-shadow: 0 10px 28px rgba(99, 102, 241, 0.6) !important;
+            filter: brightness(1.1) !important;
+        }
+
+        .btn-view-pdf svg {
+            stroke: #ffffff !important;
+            fill: none !important;
+            animation: viewEyePulse 2s infinite ease-in-out;
+        }
+
+        @keyframes viewEyePulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.18);
+            }
+        }
+
+        /* High-End App Entry Splash Loader Overlay (3.5s - 5s before Landing Page) */
+        .app-splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #090d16;
+            z-index: 999999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+            overflow: hidden;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        [data-theme="light"] .app-splash-screen {
+            background: #0f172a;
+        }
+
+        .splash-bg-glow {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.28) 0%, rgba(168, 85, 247, 0.15) 50%, transparent 70%);
+            filter: blur(65px);
+            animation: splashGlowPulse 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes splashGlowPulse {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.6;
+            }
+
+            100% {
+                transform: scale(1.25);
+                opacity: 1;
+            }
+        }
+
+        .splash-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 420px;
+            padding: 24px;
+        }
+
+        .splash-logo-container {
+            position: relative;
+            width: 76px;
+            height: 76px;
+            margin-bottom: 16px;
+            display: grid;
+            place-items: center;
+        }
+
+        .splash-logo-ring {
+            position: absolute;
+            inset: -6px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
+            filter: blur(8px);
+            opacity: 0.75;
+            animation: splashRingRotate 4s linear infinite;
+        }
+
+        @keyframes splashRingRotate {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .splash-logo-icon {
+            position: relative;
+            width: 76px;
+            height: 76px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            display: grid;
+            place-items: center;
+            color: #ffffff;
+            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.5);
+            animation: splashIconPulse 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes splashIconPulse {
+            0% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(1.08);
+            }
+        }
+
+        .splash-title {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ffffff, #c7d2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 4px;
+        }
+
+        .splash-subtitle {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 24px;
+            font-weight: 500;
+        }
+
+        .splash-resume-card {
+            position: relative;
+            width: 210px;
+            height: 135px;
+            background: rgba(30, 41, 59, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+            padding: 14px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+            margin-bottom: 26px;
+            overflow: hidden;
+            animation: splashResumeFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes splashResumeFloat {
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(-1deg);
+            }
+
+            50% {
+                transform: translateY(-8px) rotate(1deg);
+            }
+        }
+
+        .splash-scanner-beam {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #818cf8, #38bdf8, transparent);
+            box-shadow: 0 0 12px #818cf8;
+            animation: splashScanBeam 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes splashScanBeam {
+            0% {
+                top: 0%;
+            }
+
+            100% {
+                top: 100%;
+            }
+        }
+
+        .splash-resume-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .splash-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+        }
+
+        .splash-lines {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+        }
+
+        .splash-line {
+            height: 5px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .splash-line.primary {
+            background: #6366f1;
+            width: 80%;
+        }
+
+        .splash-line.long {
+            width: 90%;
+        }
+
+        .splash-line.medium {
+            width: 70%;
+        }
+
+        .splash-line.short {
+            width: 45%;
+        }
+
+        .splash-line.full {
+            width: 100%;
+        }
+
+        .splash-resume-body {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .splash-progress-wrapper {
+            width: 100%;
+            max-width: 280px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .splash-progress-track {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .splash-progress-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #6366f1, #a855f7, #38bdf8);
+            border-radius: 10px;
+            transition: width 0.1s linear;
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.8);
+        }
+
+        .splash-status-text {
+            font-size: 12px;
+            color: #cbd5e1;
+            font-weight: 500;
+            letter-spacing: 0.2px;
         }
 
         .panel {
@@ -721,8 +1093,15 @@
         }
 
         @keyframes badgePulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.18); }
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.18);
+            }
         }
 
         .notif-card-item {
@@ -759,7 +1138,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 16px;
+            padding: 16px 16px 85px 16px;
             box-sizing: border-box;
         }
 
@@ -774,7 +1153,7 @@
             display: flex;
             flex-direction: column;
             gap: 16px;
-            max-height: 88vh;
+            max-height: calc(100vh - 105px);
             overflow-y: auto;
             animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             box-sizing: border-box;
@@ -940,6 +1319,55 @@
 </head>
 
 <body>
+    <!-- App Entry Splash Loader Screen Overlay (3.5s - 5s animation before landing page) -->
+    <div id="appSplashScreen" class="app-splash-screen">
+        <div class="splash-bg-glow"></div>
+        <div class="splash-content">
+            <div class="splash-logo-container">
+                <div class="splash-logo-ring"></div>
+                <div class="splash-logo-icon">
+                    <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2.2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="splash-title">ResumeStudio</div>
+            <div class="splash-subtitle">ATS Resume Generator & LaTeX Optimizer</div>
+
+            <!-- Animated Floating Resume Page Skeleton -->
+            <div class="splash-resume-card">
+                <div class="splash-scanner-beam"></div>
+                <div class="splash-resume-header">
+                    <div class="splash-avatar"></div>
+                    <div class="splash-lines">
+                        <div class="splash-line long primary"></div>
+                        <div class="splash-line short"></div>
+                    </div>
+                </div>
+                <div class="splash-resume-body">
+                    <div class="splash-line full"></div>
+                    <div class="splash-line medium"></div>
+                    <div class="splash-line long"></div>
+                    <div class="splash-line short"></div>
+                    <div class="splash-line full"></div>
+                </div>
+            </div>
+
+            <!-- Splash Progress Bar & Status Text -->
+            <div class="splash-progress-wrapper">
+                <div class="splash-progress-track">
+                    <div id="splashProgressBar" class="splash-progress-fill"></div>
+                </div>
+                <div id="splashStatusText" class="splash-status-text">✨ Initializing ResumeStudio Engine...</div>
+            </div>
+        </div>
+    </div>
+
     <!-- Global Floating Toast Notification -->
     <div id="globalToast" class="global-toast hidden">
         <div class="toast-icon-badge">
@@ -975,36 +1403,38 @@
                 </div>
             </div>
 
-        <div style="display: flex; align-items: center; gap: 8px;">
-            <!-- Real-time App Notification Bell -->
-            <button id="notifBellBtn" onclick="toggleNotificationDrawer()" class="theme-toggle-btn" title="App Notifications" style="position: relative;">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                </svg>
-                <span id="notifBadgeCount" class="notif-badge-count hidden">0</span>
-            </button>
+            <div class="header-actions">
+                <!-- Real-time App Notification Bell -->
+                <button id="notifBellBtn" onclick="toggleNotificationDrawer()" class="header-action-btn"
+                    title="App Notifications" style="position: relative;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                    <span id="notifBadgeCount" class="notif-badge-count hidden">0</span>
+                </button>
 
-            <!-- SVG Light/Dark Mode Switcher -->
-            <button id="themeToggleBtn" class="theme-toggle-btn" title="Toggle Light/Dark Theme">
-                <svg id="themeIconSun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
-                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="5"></circle>
-                    <line x1="12" y1="1" x2="12" y2="3"></line>
-                    <line x1="12" y1="21" x2="12" y2="23"></line>
-                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                    <line x1="1" y1="12" x2="3" y2="12"></line>
-                    <line x1="21" y1="12" x2="23" y2="12"></line>
-                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                </svg>
-                <svg id="themeIconMoon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
-                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                </svg>
-            </button>
-        </div>
+                <!-- SVG Light/Dark Mode Switcher -->
+                <button id="themeToggleBtn" class="theme-toggle-btn" title="Toggle Light/Dark Theme">
+                    <svg id="themeIconSun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg id="themeIconMoon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+            </div>
         </div>
 
         <div class="app-content">
@@ -1163,11 +1593,16 @@
     </script>
 
     <!-- Real-time App Notifications Drawer Modal -->
-    <div id="notifDrawerModal" class="modal-backdrop hidden" onclick="if(event.target===this) closeNotificationDrawer()">
+    <div id="notifDrawerModal" class="modal-backdrop hidden"
+        onclick="if(event.target===this) closeNotificationDrawer()">
         <div class="modal-box" style="max-width: 540px;">
             <div class="modal-header">
                 <div class="modal-title" style="display: flex; align-items: center; gap: 8px;">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--primary)"
+                        stroke-width="2">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
                     <span>Real-Time App Notifications</span>
                 </div>
                 <button class="close-modal" onclick="closeNotificationDrawer()">&times;</button>
@@ -1175,11 +1610,15 @@
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
                 <span style="font-size: 12.5px; color: var(--muted);">Live server & AI generation events</span>
                 <div style="display: flex; gap: 8px;">
-                    <button class="secondary" onclick="markAllNotificationsRead()" style="padding: 4px 10px; font-size: 12px;">Mark Read</button>
-                    <button class="secondary" onclick="clearAllNotifications()" style="padding: 4px 10px; font-size: 12px; color: var(--error);">Clear All</button>
+                    <button class="secondary" onclick="markAllNotificationsRead()"
+                        style="padding: 4px 10px; font-size: 12px;">Mark Read</button>
+                    <button class="secondary" onclick="clearAllNotifications()"
+                        style="padding: 4px 10px; font-size: 12px; color: var(--error);">Clear All</button>
                 </div>
             </div>
-            <div id="notifListContainer" style="display: flex; flex-direction: column; gap: 10px; max-height: 55vh; overflow-y: auto; padding-right: 4px;"></div>
+            <div id="notifListContainer"
+                style="display: flex; flex-direction: column; gap: 10px; max-height: 55vh; overflow-y: auto; padding-right: 4px;">
+            </div>
         </div>
     </div>
 
@@ -1340,7 +1779,7 @@ Results-driven Software Engineer with hands-on experience in building scalable w
                                 badge: '/favicon.ico',
                                 vibrate: [180, 90, 180]
                             });
-                        }).catch(() => {});
+                        }).catch(() => { });
                     }
                 } else if (Notification.permission !== "denied") {
                     Notification.requestPermission();
@@ -1547,8 +1986,80 @@ Results-driven Software Engineer with hands-on experience in building scalable w
             });
         }
 
+        // App Entry Splash Loader Screen Controller (Plays ONLY ONCE when app opens)
+        function initSplashScreen() {
+            const splash = document.getElementById('appSplashScreen');
+            if (!splash) return;
+
+            // Check if user already saw splash screen in current session
+            if (sessionStorage.getItem('resume_studio_splash_seen')) {
+                splash.style.display = 'none';
+                return;
+            }
+
+            const progressBar = document.getElementById('splashProgressBar');
+            const statusText = document.getElementById('splashStatusText');
+
+            let progress = 0;
+            const startTime = Date.now();
+            const duration = 3500; // 3.5 seconds
+
+            const interval = setInterval(() => {
+                const elapsed = Date.now() - startTime;
+                progress = Math.min(100, Math.floor((elapsed / duration) * 100));
+
+                if (progressBar) progressBar.style.width = progress + '%';
+                if (statusText) {
+                    if (progress < 30) {
+                        statusText.textContent = "✨ Initializing ResumeStudio Engine...";
+                    } else if (progress < 65) {
+                        statusText.textContent = "📄 Loading ATS LaTeX Templates...";
+                    } else if (progress < 90) {
+                        statusText.textContent = "⚡ Optimizing AI Resume Editor...";
+                    } else {
+                        statusText.textContent = "🚀 ResumeStudio Ready!";
+                    }
+                }
+
+                if (elapsed >= duration) {
+                    clearInterval(interval);
+                    sessionStorage.setItem('resume_studio_splash_seen', 'true');
+                    splash.style.opacity = '0';
+                    splash.style.transform = 'scale(1.04)';
+                    setTimeout(() => {
+                        splash.style.display = 'none';
+                    }, 500);
+                }
+            }, 40);
+        }
+
+        // Post-Download / Generation View PDF Toast Helper
+        function showDownloadSuccessToast(pdfUrl, title = 'Generated Resume') {
+            const toast = $('#globalToast');
+            const titleEl = $('#toastTitle');
+            const descEl = $('#toastDesc');
+            if (!toast || !titleEl || !descEl) return;
+
+            titleEl.textContent = '📥 Resume PDF Ready!';
+            descEl.innerHTML = `
+                <div style="margin-bottom: 6px; font-size: 12.5px;">Your document is generated and saved.</div>
+                ${pdfUrl ? `
+                <a href="${pdfUrl}" target="_blank" class="btn-view-pdf" style="margin-top: 4px; padding: 6px 14px; font-size: 12px; border-radius: 8px;">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    <span>View Downloaded Resume</span>
+                </a>` : ''}
+            `;
+            toast.classList.remove('hidden');
+
+            if (globalToastTimer) clearTimeout(globalToastTimer);
+            globalToastTimer = setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 6000);
+        }
+
         // Real-Time App Notification System & Drawer Handler
         let previousUnreadCount = 0;
+        let isFirstNotifFetch = true;
 
         async function fetchAppNotifications() {
             try {
@@ -1567,15 +2078,21 @@ Results-driven Software Engineer with hands-on experience in building scalable w
                     }
                 }
 
-                // Trigger real-time OS alert sound & vibrate if new unread notification arrives
-                if (data.unread_count > previousUnreadCount && data.notifications.length > 0) {
-                    const latest = data.notifications[0];
-                    sendMobileNotification(latest.title, latest.message);
+                // Do NOT trigger sound/mobile popups on initial fetch during login/page load
+                if (isFirstNotifFetch) {
+                    previousUnreadCount = data.unread_count;
+                    isFirstNotifFetch = false;
+                } else {
+                    // Trigger real-time OS alert sound & vibrate ONLY when new unread notification arrives during active session
+                    if (data.unread_count > previousUnreadCount && data.notifications.length > 0) {
+                        const latest = data.notifications[0];
+                        sendMobileNotification(latest.title, latest.message);
+                    }
+                    previousUnreadCount = data.unread_count;
                 }
-                previousUnreadCount = data.unread_count;
 
                 renderNotificationList(data.notifications);
-            } catch (e) {}
+            } catch (e) { }
         }
 
         function renderNotificationList(notifications) {
@@ -1588,18 +2105,59 @@ Results-driven Software Engineer with hands-on experience in building scalable w
             }
 
             container.innerHTML = notifications.map(n => `
-                <div class="notif-card-item ${n.read ? '' : 'unread'}">
+                <div class="notif-card-item ${n.read ? '' : 'unread'}" onclick="handleNotificationClick('${n.action_url || ''}', '${n.id}')" style="cursor: pointer; position: relative;">
                     <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
                         <div style="font-size: 13.5px; font-weight: 700; color: var(--text);">${n.title}</div>
-                        <div style="font-size: 11px; color: var(--muted); font-family: monospace;">${n.time}</div>
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <div style="font-size: 11px; color: var(--muted); font-family: monospace;">${n.time}</div>
+                            <button onclick="event.stopPropagation(); dismissNotification('${n.id}')" style="background: none; border: none; color: var(--muted); cursor: pointer; padding: 2px 5px; font-size: 14px; line-height: 1; border-radius: 4px;" title="Dismiss notification">✕</button>
+                        </div>
                     </div>
-                    <div style="font-size: 12.5px; color: var(--muted); line-height: 1.4;">${n.message}</div>
-                    ${n.action_url ? `<a href="${n.action_url}" target="_blank" download style="font-size: 12px; color: var(--primary); font-weight: 600; text-decoration: underline; margin-top: 4px; display: inline-block;">📥 Download Generated Document</a>` : ''}
+                    <div style="font-size: 12.5px; color: var(--muted); line-height: 1.4; margin-top: 4px;">${n.message}</div>
+                    <div style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button onclick="event.stopPropagation(); handleNotificationClick('${n.action_url || ''}', '${n.id}')" class="btn-view-pdf" style="padding: 5px 12px; font-size: 11.5px; border-radius: 8px;">
+                            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            <span>View Generated Resume</span>
+                        </button>
+                    </div>
                 </div>
             `).join('');
         }
 
-        window.toggleNotificationDrawer = function() {
+        window.dismissNotification = async function (id) {
+            if (!id) return;
+            try {
+                await fetch('/api/notifications/delete/' + id, { method: 'POST' });
+                fetchAppNotifications();
+            } catch (e) { }
+        };
+
+        window.handleNotificationClick = async function (actionUrl, id) {
+            closeNotificationDrawer();
+            if (id) {
+                try {
+                    await fetch('/api/notifications/delete/' + id, { method: 'POST' });
+                    fetchAppNotifications();
+                } catch (e) { }
+            }
+            const currentPath = window.location.pathname;
+            const isHome = currentPath === '/' || currentPath === '/index.html' || currentPath.endsWith('index.html') || currentPath === '';
+            if (isHome) {
+                if (window.restoreActiveGeneratedResumeState) {
+                    window.restoreActiveGeneratedResumeState(true);
+                }
+                const mainResultPanel = document.getElementById('mainResultPanel');
+                if (mainResultPanel) {
+                    mainResultPanel.classList.remove('hidden');
+                    const targetY = mainResultPanel.getBoundingClientRect().top + window.pageYOffset - 80;
+                    window.scrollTo({ top: targetY, behavior: 'smooth' });
+                }
+            } else {
+                window.location.href = '/?view_generated=true';
+            }
+        };
+
+        window.toggleNotificationDrawer = function () {
             const modal = $('#notifDrawerModal');
             if (modal) {
                 modal.classList.toggle('hidden');
@@ -1609,34 +2167,37 @@ Results-driven Software Engineer with hands-on experience in building scalable w
             }
         };
 
-        window.closeNotificationDrawer = function() {
+        window.closeNotificationDrawer = function () {
             const modal = $('#notifDrawerModal');
             if (modal) modal.classList.add('hidden');
         };
 
-        window.markAllNotificationsRead = async function() {
+        window.markAllNotificationsRead = async function () {
             try {
                 await fetch('/api/notifications/mark-read', { method: 'POST' });
                 previousUnreadCount = 0;
                 const badge = $('#notifBadgeCount');
                 if (badge) badge.classList.add('hidden');
                 fetchAppNotifications();
-            } catch (e) {}
+            } catch (e) { }
         };
 
-        window.clearAllNotifications = async function() {
+        window.clearAllNotifications = async function () {
             try {
                 await fetch('/api/notifications/clear', { method: 'POST' });
                 previousUnreadCount = 0;
                 const badge = $('#notifBadgeCount');
                 if (badge) badge.classList.add('hidden');
                 fetchAppNotifications();
-            } catch (e) {}
+            } catch (e) { }
         };
 
         // Poll notifications every 3 seconds for real-time updates
         setInterval(fetchAppNotifications, 3000);
-        document.addEventListener('DOMContentLoaded', fetchAppNotifications);
+        document.addEventListener('DOMContentLoaded', () => {
+            initSplashScreen();
+            fetchAppNotifications();
+        });
     </script>
     {% block scripts %}{% endblock %}
 </body>

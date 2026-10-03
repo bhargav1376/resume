@@ -526,11 +526,12 @@
 
     <div class="row" style="margin-top: 16px; gap: 12px;">
         <button id="generateBtn" style="padding: 13px 26px; font-size: 15px;">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                <polygon
-                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                </polygon>
-            </svg>
+            <span class="animated-sparkle-icon generate-sparkle">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                    <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" />
+                    <path d="M19 2L20.2 6.8L25 8L20.2 9.2L19 14L17.8 9.2L13 8L17.8 6.8L19 2Z" opacity="0.65" />
+                </svg>
+            </span>
             <span>Generate Resume</span>
         </button>
         <button id="clearBtn" class="secondary" style="padding: 13px 20px;">
@@ -544,29 +545,28 @@
     <div id="status" class="status"></div>
 </div>
 
-
-
 <!-- Generated LaTeX Code Result Panel -->
 <div id="mainResultPanel" class="panel hidden" style="margin-top: 16px; max-width: 100%; box-sizing: border-box;">
     <div class="row"
         style="justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 10px; max-width: 100%;">
         <div
             style="font-size: 15px; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--primary)" stroke-width="2">
-                <polygon
-                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                </polygon>
-            </svg>
+            <span class="animated-sparkle-icon">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                    <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" />
+                    <path d="M19 2L20.2 6.8L25 8L20.2 9.2L19 14L17.8 9.2L13 8L17.8 6.8L19 2Z" opacity="0.65" />
+                </svg>
+            </span>
             <span id="resultPanelTitle">Generated ATS-Optimized LaTeX Code</span>
         </div>
         <div class="result-action-btns" style="display: flex; gap: 6px; flex-wrap: wrap; max-width: 100%;">
             <button id="reGenerateModalBtn" class="btn"
                 style="padding: 7px 14px; font-size: 12.5px; background: linear-gradient(135deg, #7c9cff, #9e77ff);">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
-                    <polygon
-                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                    </polygon>
-                </svg>
+                <span class="animated-sparkle-icon" style="margin-right: 2px;">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                        <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" />
+                    </svg>
+                </span>
                 <span>Re-Generate with AI</span>
             </button>
             <button id="editLatexBtn" class="secondary" style="padding: 7px 12px; font-size: 12.5px;">
@@ -576,12 +576,12 @@
                 </svg>
                 <span>Edit Code</span>
             </button>
-            <button id="previewPdfBtn" class="btn secondary" style="padding: 7px 12px; font-size: 12.5px;">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+            <button id="previewPdfBtn" class="btn-view-pdf" style="padding: 7px 14px; font-size: 12.5px;">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2">
                     <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                     <circle cx="12" cy="12" r="3"></circle>
                 </svg>
-                <span>Preview PDF</span>
+                <span>View PDF</span>
             </button>
             <button id="copyLatexBtn" class="secondary" style="padding: 7px 12px; font-size: 12.5px;">
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
@@ -680,7 +680,7 @@
 
 <!-- Newly Generated LaTeX Code Result Modal -->
 <div id="newLatexCodeModal" class="modal-backdrop hidden" onclick="if(event.target===this) closeNewLatexCodeModal()">
-    <div class="modal-box" style="max-width: 820px; max-height: 85vh;">
+    <div class="modal-box" style="max-width: 900px; height: calc(100vh - 105px); max-height: calc(100vh - 105px);">
         <div class="modal-header">
             <div class="modal-title">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--primary)" stroke-width="2">
@@ -696,8 +696,8 @@
         <div class="row" style="justify-content: flex-end; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
             <button id="modalCopyCodeBtn" class="secondary" style="padding: 8px 16px; font-size: 13px;">📋 Copy
                 Code</button>
-            <button id="modalPreviewPdfBtn" class="btn secondary" style="padding: 8px 16px; font-size: 13px;">👁️
-                Preview PDF</button>
+            <button id="modalPreviewPdfBtn" class="btn secondary" style="padding: 8px 16px; font-size: 13px;">Preview
+                PDF</button>
             <a id="modalDownloadPdfBtn" href="#" download class="btn" style="padding: 8px 18px; font-size: 13px;">📥
                 Download PDF</a>
             <button class="secondary" onclick="closeNewLatexCodeModal()"
@@ -709,7 +709,7 @@
 <!-- PDF Preview Modal -->
 <div id="homePdfPreviewModal" class="modal-backdrop hidden"
     onclick="if(event.target===this) closeHomePdfPreviewModal()">
-    <div class="modal-box" style="max-width: 850px; height: 80vh; max-height: 80vh;">
+    <div class="modal-box" style="max-width: 920px; height: calc(100vh - 105px); max-height: calc(100vh - 105px);">
         <div class="modal-header">
             <div class="modal-title">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
@@ -722,14 +722,20 @@
             </div>
             <button class="close-modal" onclick="closeHomePdfPreviewModal()">&times;</button>
         </div>
-        
+
         <!-- Mobile Quick Action Bar -->
         <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <a id="homeModalDownloadBtnTop" href="#" download class="btn" style="flex: 1; min-width: 130px; justify-content: center; padding: 9px 14px; font-size: 13px;">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            <a id="homeModalDownloadBtnTop" href="#" download class="btn"
+                style="flex: 1; min-width: 130px; justify-content: center; padding: 9px 14px; font-size: 13px;">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
                 <span>Download PDF</span>
             </a>
-            <a id="homeModalOpenTabBtnTop" href="#" target="_blank" class="secondary" style="flex: 1; min-width: 130px; justify-content: center; padding: 9px 14px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+            <a id="homeModalOpenTabBtnTop" href="#" target="_blank" class="secondary"
+                style="flex: 1; min-width: 130px; justify-content: center; padding: 9px 14px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
                 <span>↗ Open PDF</span>
             </a>
         </div>
@@ -738,7 +744,7 @@
             style="flex: 1; position: relative; width: 100%; height: 100%; border-radius: 12px; overflow: hidden; background: var(--input-bg); min-height: 200px;">
             <iframe id="homePdfPreviewIframe" style="width: 100%; height: 100%; border: none;"></iframe>
         </div>
-        
+
         <div class="row" style="justify-content: flex-end; gap: 10px; margin-top: 6px;">
             <button class="secondary" onclick="closeHomePdfPreviewModal()"
                 style="padding: 8px 18px; font-size: 13px;">Close</button>
@@ -822,7 +828,8 @@
             <li style="margin-bottom: 4px;"><strong style="color: var(--text);">Paste Job Description:</strong> Paste
                 the full target job description into the input box above.</li>
             <li style="margin-bottom: 4px;"><strong style="color: var(--text);">Click Generate:</strong> Tap
-                <em>"Generate Resume"</em> to let AI tailor your skills and experience.</li>
+                <em>"Generate Resume"</em> to let AI tailor your skills and experience.
+            </li>
             <li><strong style="color: var(--text);">Preview, Edit & Re-Generate:</strong> Live preview your PDF, edit
                 LaTeX code directly, or open AI Re-Generation to re-correct. Resumes auto-save in <strong
                     style="color: var(--text);">Saved Resumes</strong>.</li>
@@ -981,6 +988,7 @@
     async function fetchPdfAsDataUrl(url) {
         try {
             const res = await fetch(url);
+            if (!res.ok) return null;
             const blob = await res.blob();
             return new Promise((resolve) => {
                 const reader = new FileReader();
@@ -990,6 +998,63 @@
         } catch (e) {
             return null;
         }
+    }
+
+    async function ensurePdfIsReady(forceRecompile = false) {
+        if (!forceRecompile && currentPdfDataUrl) {
+            return currentPdfDataUrl;
+        }
+
+        if (!forceRecompile && currentPdfUrl) {
+            const dataUrl = await fetchPdfAsDataUrl(currentPdfUrl);
+            if (dataUrl) {
+                currentPdfDataUrl = dataUrl;
+                if (downloadPdfBtn) {
+                    downloadPdfBtn.href = currentPdfDataUrl;
+                    downloadPdfBtn.style.display = 'inline-flex';
+                }
+                return currentPdfDataUrl;
+            }
+        }
+
+        const code = mainLatexCode ? mainLatexCode.textContent.trim() : '';
+        if (!code) return null;
+
+        try {
+            const res = await fetch('/compile-template', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code: code })
+            });
+            const data = await res.json();
+            if (data.success && (data.preview_url || data.download_url)) {
+                currentPdfUrl = data.preview_url || data.download_url;
+                currentPdfDataUrl = await fetchPdfAsDataUrl(currentPdfUrl) || currentPdfUrl;
+                if (downloadPdfBtn) {
+                    downloadPdfBtn.href = currentPdfDataUrl || currentPdfUrl;
+                    downloadPdfBtn.style.display = 'inline-flex';
+                }
+                
+                let titleText = 'Generated ATS Resume';
+                const pTitle = document.getElementById('resultPanelTitle');
+                if (pTitle && pTitle.textContent) {
+                    titleText = pTitle.textContent.replace('Generated ATS Resume: ', '');
+                }
+
+                saveActiveGeneratedState({
+                    title: titleText,
+                    latex_code: code,
+                    preview_url: currentPdfUrl,
+                    download_url: data.download_url,
+                    pdf_data_url: currentPdfDataUrl
+                });
+
+                return currentPdfDataUrl || currentPdfUrl;
+            }
+        } catch (e) {
+            console.error('ensurePdfIsReady error:', e);
+        }
+        return null;
     }
 
     generateBtn.addEventListener('click', async () => {
@@ -1056,6 +1121,14 @@
                     });
                     saveSavedResumes(saved);
 
+                    saveActiveGeneratedState({
+                        title: displayTitle,
+                        latex_code: data.latex_code,
+                        preview_url: data.preview_url || null,
+                        download_url: (data.success && data.pdf_generated && data.download_url) ? data.download_url : null,
+                        pdf_data_url: currentPdfDataUrl || null
+                    });
+
                     if (data.success && data.pdf_generated && data.download_url) {
                         downloadPdfBtn.href = currentPdfDataUrl || data.download_url;
                         downloadPdfBtn.style.display = 'inline-flex';
@@ -1083,8 +1156,11 @@
             if (previewCodeBox) previewCodeBox.textContent = currentCode;
 
             const pdfIframe = $('#regenPdfIframe');
-            if (pdfIframe && (currentPdfDataUrl || currentPdfUrl)) {
-                pdfIframe.src = currentPdfDataUrl || currentPdfUrl;
+            if (pdfIframe) {
+                pdfIframe.src = 'about:blank';
+                ensurePdfIsReady().then(pdfUrl => {
+                    if (pdfUrl) pdfIframe.src = pdfUrl;
+                });
             }
 
             switchRegenModalTab('latex');
@@ -1110,8 +1186,15 @@
             if (tabLatex) tabLatex.className = 'btn secondary';
 
             const pdfIframe = $('#regenPdfIframe');
-            if (pdfIframe && (currentPdfDataUrl || currentPdfUrl)) {
-                pdfIframe.src = currentPdfDataUrl || currentPdfUrl;
+            if (pdfIframe) {
+                if (currentPdfDataUrl || currentPdfUrl) {
+                    pdfIframe.src = currentPdfDataUrl || currentPdfUrl;
+                }
+                ensurePdfIsReady().then(pdfUrl => {
+                    if (pdfUrl && pdfIframe.src !== pdfUrl) {
+                        pdfIframe.src = pdfUrl;
+                    }
+                });
             }
         }
     };
@@ -1192,6 +1275,14 @@
                     });
                     saveSavedResumes(saved);
 
+                    saveActiveGeneratedState({
+                        title: displayTitle,
+                        latex_code: data.latex_code,
+                        preview_url: data.preview_url || null,
+                        download_url: data.download_url || null,
+                        pdf_data_url: currentPdfDataUrl || null
+                    });
+
                     showGlobalToast('✨ AI Re-Generated!', `Newly generated LaTeX resume "${displayTitle}" is updated on page!`);
                 }
             });
@@ -1245,14 +1336,10 @@
 
         showGlobalToast('⏳ Re-compiling PDF...', 'Compiling updated LaTeX code...');
         try {
-            const res = await fetch('/optimize', {
+            const res = await fetch('/compile-template', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    job_description: 'Recompile edited code',
-                    latex_template: editedCode,
-                    session_uuid: activeSessionUuid
-                })
+                body: JSON.stringify({ code: editedCode })
             });
             const data = await res.json();
             if (data.preview_url || data.download_url) {
@@ -1276,37 +1363,14 @@
 
     // Reliable PDF Preview Modal Handler
     previewPdfBtn.addEventListener('click', async () => {
-        const targetPdf = currentPdfDataUrl || currentPdfUrl;
-        if (!targetPdf) {
-            const code = mainLatexCode.textContent.trim();
-            if (code) {
-                showGlobalToast('⏳ Compiling PDF...', 'Generating PDF preview for your LaTeX code...');
-                try {
-                    const res = await fetch('/optimize', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            job_description: 'Preview PDF compilation',
-                            latex_template: code,
-                            session_uuid: activeSessionUuid
-                        })
-                    });
-                    const data = await res.json();
-                    if (data.preview_url || data.download_url) {
-                        currentPdfUrl = data.preview_url || data.download_url;
-                        if (currentPdfUrl) {
-                            currentPdfDataUrl = await fetchPdfAsDataUrl(currentPdfUrl);
-                        }
-                        downloadPdfBtn.href = currentPdfDataUrl || currentPdfUrl;
-                        downloadPdfBtn.style.display = 'inline-flex';
-                    }
-                } catch (e) { }
-            }
-        }
-
-        const finalPdf = currentPdfDataUrl || currentPdfUrl;
+        let finalPdf = currentPdfDataUrl || currentPdfUrl;
         if (!finalPdf) {
-            showGlobalToast('⚠️ PDF Not Ready', 'Please wait a moment or click Re-compile PDF.');
+            showGlobalToast('⏳ Preparing PDF Preview...', 'Compiling LaTeX into PDF...');
+        }
+        finalPdf = await ensurePdfIsReady();
+
+        if (!finalPdf) {
+            showGlobalToast('⚠️ PDF Not Ready', 'Could not render PDF preview. Please check LaTeX code.');
             return;
         }
 
@@ -1320,6 +1384,20 @@
         if (openTabBtnTop) openTabBtnTop.href = finalPdf;
         modal.classList.remove('hidden');
     });
+
+    if (downloadPdfBtn) {
+        downloadPdfBtn.addEventListener('click', async (e) => {
+            if (!currentPdfDataUrl && !currentPdfUrl) {
+                e.preventDefault();
+                showGlobalToast('⏳ Preparing PDF...', 'Compiling PDF for download...');
+                const pdfUrl = await ensurePdfIsReady();
+                if (pdfUrl) {
+                    downloadPdfBtn.href = pdfUrl;
+                    window.open(pdfUrl, '_blank');
+                }
+            }
+        });
+    }
 
     window.closeHomePdfPreviewModal = function () {
         const modal = $('#homePdfPreviewModal');
@@ -1345,8 +1423,98 @@
         } catch (e) { }
     });
 
+    function saveActiveGeneratedState(stateObj) {
+        try {
+            const clone = { ...stateObj };
+            if (clone.pdf_data_url && clone.pdf_data_url.length > 400000) {
+                delete clone.pdf_data_url;
+            }
+            localStorage.setItem('resume_studio_active_generated', JSON.stringify(clone));
+        } catch (e) {
+            try {
+                delete stateObj.pdf_data_url;
+                localStorage.setItem('resume_studio_active_generated', JSON.stringify(stateObj));
+            } catch (err) {}
+        }
+    }
+
+    function restoreActiveGeneratedState(forceShow = false) {
+        try {
+            let state = null;
+            const raw = localStorage.getItem('resume_studio_active_generated');
+            if (raw) {
+                try { state = JSON.parse(raw); } catch (e) { }
+            }
+
+            // Fallback to most recent saved resume if active state is missing
+            if (!state || !state.latex_code) {
+                const saved = getSavedResumes();
+                if (saved && saved.length > 0 && saved[0].latex_code) {
+                    const topItem = saved[0];
+                    state = {
+                        title: topItem.title,
+                        latex_code: topItem.latex_code,
+                        preview_url: topItem.preview_url || null,
+                        download_url: topItem.download_url || null,
+                        pdf_data_url: topItem.pdf_data_url || null
+                    };
+                }
+            }
+
+            if (!state || !state.latex_code) return;
+
+            const codeBox = document.getElementById('mainLatexCode');
+            const resultPanel = document.getElementById('mainResultPanel');
+            const downloadBtn = document.getElementById('downloadPdfBtn');
+            const panelTitle = document.getElementById('resultPanelTitle');
+
+            if (codeBox) {
+                codeBox.textContent = state.latex_code;
+            }
+
+            currentPdfUrl = state.preview_url || state.download_url;
+            currentPdfDataUrl = state.pdf_data_url || null;
+
+            if (panelTitle && state.title) {
+                panelTitle.textContent = state.title.startsWith('Generated') ? state.title : 'Generated ATS Resume: ' + state.title;
+            }
+
+            if (downloadBtn) {
+                downloadBtn.style.display = 'inline-flex';
+                if (currentPdfDataUrl || currentPdfUrl) {
+                    downloadBtn.href = currentPdfDataUrl || currentPdfUrl;
+                }
+            }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const isExplicitView = forceShow || urlParams.get('view_generated') === 'true' || window.location.hash === '#mainResultPanel';
+
+            if (isExplicitView && resultPanel) {
+                resultPanel.classList.remove('hidden');
+                setTimeout(() => {
+                    const targetY = resultPanel.getBoundingClientRect().top + window.pageYOffset - 80;
+                    window.scrollTo({ top: targetY, behavior: 'smooth' });
+                }, 200);
+
+                ensurePdfIsReady().then(pdfUrl => {
+                    if (pdfUrl && downloadBtn) {
+                        downloadBtn.href = pdfUrl;
+                        downloadBtn.style.display = 'inline-flex';
+                    }
+                });
+            } else if (resultPanel) {
+                resultPanel.classList.add('hidden');
+            }
+        } catch (e) {
+            console.error('Error restoring active state:', e);
+        }
+    }
+
+    window.restoreActiveGeneratedResumeState = restoreActiveGeneratedState;
+
     document.addEventListener('DOMContentLoaded', () => {
         updateGreeting();
+        restoreActiveGeneratedState();
     });
 </script>
 {% endblock %}

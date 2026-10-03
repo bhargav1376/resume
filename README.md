@@ -3,13 +3,13 @@
 > **AI-Powered ATS-Optimized Resume Generator**  
 > Transform your resume to match any job description with intelligent keyword optimization and professional LaTeX formatting.
 
-<div align="center">
+<!-- <div align="center">
 <img width="659" height="298" alt="image" src="https://github.com/user-attachments/assets/bd5d25d8-4c76-425c-8631-f2b8266288cf" />
 
 <img width="644" height="491" alt="image" src="https://github.com/user-attachments/assets/d6cde67a-c29a-4101-9d1c-e4656d95d30f" />
 
 
-</div>
+</div> -->
 
 ---
 
