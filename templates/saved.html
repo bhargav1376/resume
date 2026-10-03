@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+
+{% block title %}ResumeStudio — Saved Resumes{% endblock %}
+
+{% block content %}
+<div class="panel">
+    <div class="section-title" style="font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 8px;">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--primary)" stroke-width="2.2">
+            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <span>Saved Generated Resumes</span>
+    </div>
+    <p class="small" style="margin-bottom: 16px;">Resumes generated during your session are stored locally with offline PDF preview and instant download support.</p>
+    <div id="savedResumesList" class="card-list"></div>
+</div>
+
+<!-- PDF Preview Modal -->
+<div id="pdfPreviewModal" class="modal-backdrop hidden" onclick="if(event.target===this) closePdfPreviewModal()">
+    <div class="modal-box" style="max-width: 880px; height: 86vh;">
+        <div class="modal-header">
+            <div class="modal-title">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                <span id="previewModalTitle">Resume PDF Preview</span>
+            </div>
+            <button class="close-modal" onclick="closePdfPreviewModal()">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
+        <div id="savedPdfFrame" style="flex: 1; position: relative; width: 100%; height: 100%; border-radius: 12px; overflow: hidden; background: var(--input-bg);"></div>
+        <div class="row" style="justify-content: flex-end; gap: 10px; margin-top: 10px;">
+            <a id="modalDownloadPdfBtn" href="#" download class="btn" style="padding: 8px 18px; font-size: 13px;">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span>Download PDF</span>
+            </a>
+            <button class="secondary" onclick="closePdfPreviewModal()" style="padding: 8px 16px; font-size: 13px;">Close</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function truncateTitle(title) {
+        if (!title) return 'Generated Resume';
+        const words = title.trim().split(/\s+/);
+        if (words.length > 10) {
+            return words.slice(0, 10).join(' ') + '...';
+        }
+        return title;
+    }
+
+    function refreshSavedResumesUI() {
+        const resumes = getSavedResumes();
+        const container = $('#savedResumesList');
+        if (!container) return;
+        container.innerHTML = '';
+
+        if (resumes.length === 0) {
+            container.innerHTML = '<div class="small muted" style="padding: 24px; text-align: center; background: var(--input-bg); border-radius: 14px; border: 1px dashed var(--border);">No saved resumes found yet. Generate a resume on the Home page to see it stored here!</div>';
+            return;
+        }
+
+        resumes.forEach(r => {
+            const item = document.createElement('div');
+            item.className = 'card-item';
+            item.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; margin-bottom: 12px; background: var(--input-bg); border: 1px solid var(--border); border-radius: 14px; flex-wrap: wrap; gap: 12px; transition: transform 0.2s ease, border-color 0.2s ease;';
+            
+            const displayTitle = truncateTitle(r.title);
+
+            item.innerHTML = `
+                <div class="card-info" style="flex: 1; min-width: 220px;">
+                    <div class="card-title" style="font-weight: 700; font-size: 14.5px; color: var(--text); margin-bottom: 4px;" title="${r.title || ''}">${displayTitle}</div>
+                    <div class="card-sub" style="font-size: 12px; color: var(--muted);">Generated: ${new Date(r.createdAt).toLocaleString()}</div>
+                </div>
+                <div class="row" style="gap: 8px; align-items: center; margin-left: auto; justify-content: flex-end; flex-wrap: nowrap;">
+                    <button class="btn secondary" style="width: 38px; height: 38px; min-width: 38px; padding: 0; border-radius: 10px; display: grid; place-items: center;" onclick="previewSavedPdf('${r.id}')" title="Preview PDF">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    </button>
+                    <button class="btn" style="width: 38px; height: 38px; min-width: 38px; padding: 0; border-radius: 10px; display: grid; place-items: center;" onclick="downloadSavedPdf('${r.id}')" title="Download PDF">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    </button>
+                    ${r.latex_code ? `
+                    <button class="btn secondary" style="width: 38px; height: 38px; min-width: 38px; padding: 0; border-radius: 10px; display: grid; place-items: center;" onclick="copySavedLatex(event, '${r.id}')" title="Copy LaTeX Code">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    </button>` : ''}
+                    <button class="btn danger" style="width: 38px; height: 38px; min-width: 38px; padding: 0; border-radius: 10px; display: grid; place-items: center;" onclick="deleteSavedResume('${r.id}')" title="Remove Resume">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    </button>
+                </div>
+            `;
+            container.appendChild(item);
+        });
+    }
+
+    window.previewSavedPdf = function(id) {
+        const resumes = getSavedResumes();
+        const found = resumes.find(r => r.id === id);
+        if (!found) return;
+
+        const modal = $('#pdfPreviewModal');
+        const frameContainer = $('#savedPdfFrame');
+        const downloadBtn = $('#modalDownloadPdfBtn');
+        const titleEl = $('#previewModalTitle');
+
+        titleEl.textContent = truncateTitle(found.title);
+
+        let targetUrl = found.pdf_data_url || found.preview_url || found.download_url;
+
+        if (targetUrl) {
+            frameContainer.innerHTML = `<embed src="${targetUrl}" type="application/pdf" style="width: 100%; height: 100%; border: none; border-radius: 12px;" />`;
+            downloadBtn.href = targetUrl;
+            downloadBtn.setAttribute('download', (truncateTitle(found.title)) + '.pdf');
+            modal.classList.remove('hidden');
+        } else if (found.latex_code) {
+            showGlobalToast('⏳ Loading Preview...', 'Rendering PDF preview for saved resume.');
+            fetch('/optimize', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ job_description: 'Preview generation', latex_template: found.latex_code })
+            })
+            .then(res => res.json())
+            .then(data => {
+                const newUrl = data.preview_url || data.download_url;
+                if (newUrl) {
+                    found.preview_url = data.preview_url;
+                    found.download_url = data.download_url;
+                    saveSavedResumes(resumes);
+                    frameContainer.innerHTML = `<embed src="${newUrl}" type="application/pdf" style="width: 100%; height: 100%; border: none; border-radius: 12px;" />`;
+                    downloadBtn.href = newUrl;
+                    modal.classList.remove('hidden');
+                } else {
+                    showGlobalToast('⚠️ PDF Preview Unavailable', 'Could not render PDF preview for this template.');
+                }
+            })
+            .catch(() => {
+                showGlobalToast('❌ Error', 'Unable to connect to PDF compilation service.');
+            });
+        }
+    };
+
+    window.closePdfPreviewModal = function() {
+        const modal = $('#pdfPreviewModal');
+        const frameContainer = $('#savedPdfFrame');
+        if (frameContainer) frameContainer.innerHTML = '';
+        if (modal) modal.classList.add('hidden');
+    };
+
+    window.downloadSavedPdf = function(id) {
+        const resumes = getSavedResumes();
+        const found = resumes.find(r => r.id === id);
+        if (!found) return;
+
+        const targetUrl = found.pdf_data_url || found.download_url || found.preview_url;
+        if (targetUrl) {
+            const a = document.createElement('a');
+            a.href = targetUrl;
+            a.download = truncateTitle(found.title) + '.pdf';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        } else if (found.latex_code) {
+            showGlobalToast('⏳ Compiling PDF...', 'Preparing your PDF download...');
+            fetch('/optimize', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ job_description: 'Download PDF', latex_template: found.latex_code })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.download_url) {
+                    found.download_url = data.download_url;
+                    saveSavedResumes(resumes);
+                    const a = document.createElement('a');
+                    a.href = data.download_url;
+                    a.download = truncateTitle(found.title) + '.pdf';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                } else {
+                    showGlobalToast('❌ Error', 'PDF generation failed.');
+                }
+            });
+        }
+    };
+
+    window.copySavedLatex = async function(event, id) {
+        const resumes = getSavedResumes();
+        const found = resumes.find(r => r.id === id);
+        if (found && found.latex_code) {
+            try {
+                await navigator.clipboard.writeText(found.latex_code);
+                showGlobalToast('📋 Code Copied!', 'LaTeX code copied to clipboard.');
+            } catch (e) {}
+        }
+    };
+
+    window.deleteSavedResume = function(id) {
+        let resumes = getSavedResumes();
+        resumes = resumes.filter(r => r.id !== id);
+        saveSavedResumes(resumes);
+        refreshSavedResumesUI();
+        showGlobalToast('🗑️ Resume Removed', 'The resume has been deleted from local storage.');
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        refreshSavedResumesUI();
+    });
+</script>
+{% endblock %}
