@@ -674,6 +674,73 @@
             }
         }
 
+        /* Floating PWA Download App Banner Popup */
+        .pwa-bottom-banner {
+            position: fixed;
+            bottom: 84px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 24px);
+            max-width: 480px;
+            background: var(--panel);
+            border: 1.5px solid var(--primary);
+            border-radius: 16px;
+            padding: 12px 16px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 24px rgba(124, 156, 255, 0.3);
+            z-index: 2500;
+            animation: pwaBannerSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            box-sizing: border-box;
+        }
+
+        @keyframes pwaBannerSlideUp {
+            from {
+                opacity: 0;
+                transform: translate(-50%, 30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        /* Real-Time App Notification Badge & Card Styles */
+        .notif-badge-count {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: #ef4444;
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 800;
+            border-radius: 10px;
+            padding: 2px 6px;
+            line-height: 1;
+            box-shadow: 0 0 8px rgba(239, 68, 68, 0.7);
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.18); }
+        }
+
+        .notif-card-item {
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            transition: all 0.25s ease;
+        }
+
+        .notif-card-item.unread {
+            border-color: var(--primary);
+            background: rgba(124, 156, 255, 0.06);
+        }
+
         /* Global Utility & Modal Styles */
         .hidden {
             display: none !important;
@@ -908,6 +975,16 @@
                 </div>
             </div>
 
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <!-- Real-time App Notification Bell -->
+            <button id="notifBellBtn" onclick="toggleNotificationDrawer()" class="theme-toggle-btn" title="App Notifications" style="position: relative;">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+                <span id="notifBadgeCount" class="notif-badge-count hidden">0</span>
+            </button>
+
             <!-- SVG Light/Dark Mode Switcher -->
             <button id="themeToggleBtn" class="theme-toggle-btn" title="Toggle Light/Dark Theme">
                 <svg id="themeIconSun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
@@ -928,6 +1005,7 @@
                 </svg>
             </button>
         </div>
+        </div>
 
         <div class="app-content">
             {% block content %}{% endblock %}
@@ -943,6 +1021,37 @@
     {% elif active_page == 'help' %}
     {% set notch_x = 350 %}
     {% endif %}
+
+    <!-- Floating Bottom PWA Download App Banner Popup -->
+    <div id="pwaBottomBanner" class="pwa-bottom-banner hidden">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div
+                    style="width: 40px; height: 40px; min-width: 40px; border-radius: 12px; background: linear-gradient(135deg, var(--primary), var(--primary-2)); display: grid; place-items: center; color: white; flex-shrink: 0; box-shadow: 0 4px 14px rgba(124, 156, 255, 0.4);">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                        <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                    </svg>
+                </div>
+                <div>
+                    <div style="font-size: 14px; font-weight: 700; color: var(--text); line-height: 1.2;">Install
+                        ResumeStudio App</div>
+                    <div style="font-size: 11.5px; color: var(--muted); margin-top: 2px;">Add to Home Screen for 1-click
+                        ATS resume generation</div>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+                <button onclick="triggerPWAInstall()"
+                    style="background: linear-gradient(135deg, var(--primary), var(--primary-2)); color: white; border: none; padding: 8px 14px; border-radius: 10px; font-size: 12.5px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; box-shadow: 0 4px 12px rgba(124, 156, 255, 0.35);">
+                    ⚡ Install App
+                </button>
+                <button onclick="dismissPWABanner()"
+                    style="background: transparent; border: none; color: var(--muted); font-size: 20px; cursor: pointer; padding: 2px 4px; line-height: 1; display: flex; align-items: center; justify-content: center;"
+                    title="Dismiss">&times;</button>
+            </div>
+        </div>
+    </div>
 
     <div class="fixed-bottom-bar">
         <div class="bottom-nav-dock">
@@ -1053,6 +1162,27 @@
         document.addEventListener('DOMContentLoaded', updateDockNotch);
     </script>
 
+    <!-- Real-time App Notifications Drawer Modal -->
+    <div id="notifDrawerModal" class="modal-backdrop hidden" onclick="if(event.target===this) closeNotificationDrawer()">
+        <div class="modal-box" style="max-width: 540px;">
+            <div class="modal-header">
+                <div class="modal-title" style="display: flex; align-items: center; gap: 8px;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                    <span>Real-Time App Notifications</span>
+                </div>
+                <button class="close-modal" onclick="closeNotificationDrawer()">&times;</button>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <span style="font-size: 12.5px; color: var(--muted);">Live server & AI generation events</span>
+                <div style="display: flex; gap: 8px;">
+                    <button class="secondary" onclick="markAllNotificationsRead()" style="padding: 4px 10px; font-size: 12px;">Mark Read</button>
+                    <button class="secondary" onclick="clearAllNotifications()" style="padding: 4px 10px; font-size: 12px; color: var(--error);">Clear All</button>
+                </div>
+            </div>
+            <div id="notifListContainer" style="display: flex; flex-direction: column; gap: 10px; max-height: 55vh; overflow-y: auto; padding-right: 4px;"></div>
+        </div>
+    </div>
+
     <!-- App Download Modal -->
     <div id="appDownloadModal" class="modal-backdrop hidden" onclick="if(event.target===this) closeAppDownloadModal()">
         <div class="modal-box" style="max-width: 520px;">
@@ -1152,8 +1282,46 @@ Results-driven Software Engineer with hands-on experience in building scalable w
         const $ = (sel) => document.querySelector(sel);
         const $$ = (sel) => document.querySelectorAll(sel);
 
-        // Native Mobile / Browser Push Notification System
+        // Web Audio Synthesized Chime Sound
+        function playNotificationChimeSound() {
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtx) return;
+                const ctx = new AudioCtx();
+                if (ctx.state === 'suspended') {
+                    ctx.resume();
+                }
+                const osc1 = ctx.createOscillator();
+                const osc2 = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc1.type = 'sine';
+                osc2.type = 'sine';
+                osc1.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
+                osc2.frequency.setValueAtTime(880.00, ctx.currentTime); // A5
+
+                gain.gain.setValueAtTime(0.18, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.45);
+
+                osc1.connect(gain);
+                osc2.connect(gain);
+                gain.connect(ctx.destination);
+
+                osc1.start(ctx.currentTime);
+                osc2.start(ctx.currentTime);
+                osc1.stop(ctx.currentTime + 0.45);
+                osc2.stop(ctx.currentTime + 0.45);
+            } catch (e) { }
+        }
+
+        // Native Mobile & Browser Push Notification System
         function sendMobileNotification(title, body) {
+            playNotificationChimeSound();
+
+            if (navigator.vibrate) {
+                try { navigator.vibrate([180, 90, 180]); } catch (e) { }
+            }
+
             if ("Notification" in window) {
                 if (Notification.permission === "granted") {
                     try {
@@ -1163,12 +1331,20 @@ Results-driven Software Engineer with hands-on experience in building scalable w
                             badge: '/favicon.ico'
                         });
                     } catch (e) { }
+
+                    if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+                        navigator.serviceWorker.ready.then(reg => {
+                            reg.showNotification(title, {
+                                body: body,
+                                icon: '/favicon.ico',
+                                badge: '/favicon.ico',
+                                vibrate: [180, 90, 180]
+                            });
+                        }).catch(() => {});
+                    }
                 } else if (Notification.permission !== "denied") {
                     Notification.requestPermission();
                 }
-            }
-            if (navigator.vibrate) {
-                try { navigator.vibrate([200, 100, 200]); } catch (e) { }
             }
         }
 
@@ -1187,8 +1363,8 @@ Results-driven Software Engineer with hands-on experience in building scalable w
 
                 if (globalToastTimer) clearTimeout(globalToastTimer);
                 globalToastTimer = setTimeout(() => {
-                    closeGlobalToast();
-                }, 3500);
+                    toast.classList.add('hidden');
+                }, 4500);
             }
         }
 
@@ -1309,26 +1485,60 @@ Results-driven Software Engineer with hands-on experience in building scalable w
             }
         }, { once: true });
 
-        // PWA Native Installation Handler
+        // PWA Native Installation Handler & Bottom Banner Popup
         let deferredPrompt = null;
+
+        function showPWABottomBanner() {
+            const isDismissed = localStorage.getItem('pwa_banner_dismissed');
+            const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+            if (!isDismissed && !isStandalone) {
+                const banner = document.getElementById('pwaBottomBanner');
+                if (banner) banner.classList.remove('hidden');
+            }
+        }
+
+        window.dismissPWABanner = function () {
+            const banner = document.getElementById('pwaBottomBanner');
+            if (banner) banner.classList.add('hidden');
+            localStorage.setItem('pwa_banner_dismissed', 'true');
+        };
+
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
+            showPWABottomBanner();
         });
 
-        window.triggerPWAInstall = function() {
+        window.triggerPWAInstall = function () {
+            if ("Notification" in window && Notification.permission === "default") {
+                Notification.requestPermission();
+            }
+
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((choiceResult) => {
                     if (choiceResult.outcome === 'accepted') {
-                        showGlobalToast('✨ App Installed', 'ResumeStudio added to home screen!');
+                        sendMobileNotification('✨ App Installed!', 'ResumeStudio was added to your home screen.');
+                        dismissPWABanner();
                     }
                     deferredPrompt = null;
                 });
             } else {
-                showGlobalToast('📱 Install Instructions', 'Tap your browser menu (⋮ or Share) and select "Add to Home Screen" or "Install App".');
+                const appModal = document.getElementById('appDownloadModal');
+                if (appModal) {
+                    appModal.classList.remove('hidden');
+                }
+                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+                if (isIOS) {
+                    showGlobalToast('📱 iOS Installation', 'Tap Share button (bottom bar) ➔ Select "Add to Home Screen" ➔ Tap Add!');
+                } else {
+                    showGlobalToast('📱 Mobile App Download', 'Tap browser menu (⋮ top right) ➔ Select "Install App" or "Add to Home Screen".');
+                }
             }
         };
+
+        // Auto-display PWA bottom banner popup after 2 seconds on page load
+        setTimeout(showPWABottomBanner, 2000);
 
         // Service Worker Registration
         if ('serviceWorker' in navigator) {
@@ -1336,6 +1546,97 @@ Results-driven Software Engineer with hands-on experience in building scalable w
                 navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW reg error', err));
             });
         }
+
+        // Real-Time App Notification System & Drawer Handler
+        let previousUnreadCount = 0;
+
+        async function fetchAppNotifications() {
+            try {
+                const res = await fetch('/api/notifications');
+                if (!res.ok) return;
+                const data = await res.json();
+                if (!data.success) return;
+
+                const badge = $('#notifBadgeCount');
+                if (badge) {
+                    if (data.unread_count > 0) {
+                        badge.textContent = data.unread_count;
+                        badge.classList.remove('hidden');
+                    } else {
+                        badge.classList.add('hidden');
+                    }
+                }
+
+                // Trigger real-time OS alert sound & vibrate if new unread notification arrives
+                if (data.unread_count > previousUnreadCount && data.notifications.length > 0) {
+                    const latest = data.notifications[0];
+                    sendMobileNotification(latest.title, latest.message);
+                }
+                previousUnreadCount = data.unread_count;
+
+                renderNotificationList(data.notifications);
+            } catch (e) {}
+        }
+
+        function renderNotificationList(notifications) {
+            const container = $('#notifListContainer');
+            if (!container) return;
+
+            if (!notifications || notifications.length === 0) {
+                container.innerHTML = `<div style="text-align: center; color: var(--muted); padding: 24px 12px; font-size: 13.5px;">No notifications yet. Notifications will appear when resumes are generated.</div>`;
+                return;
+            }
+
+            container.innerHTML = notifications.map(n => `
+                <div class="notif-card-item ${n.read ? '' : 'unread'}">
+                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                        <div style="font-size: 13.5px; font-weight: 700; color: var(--text);">${n.title}</div>
+                        <div style="font-size: 11px; color: var(--muted); font-family: monospace;">${n.time}</div>
+                    </div>
+                    <div style="font-size: 12.5px; color: var(--muted); line-height: 1.4;">${n.message}</div>
+                    ${n.action_url ? `<a href="${n.action_url}" target="_blank" download style="font-size: 12px; color: var(--primary); font-weight: 600; text-decoration: underline; margin-top: 4px; display: inline-block;">📥 Download Generated Document</a>` : ''}
+                </div>
+            `).join('');
+        }
+
+        window.toggleNotificationDrawer = function() {
+            const modal = $('#notifDrawerModal');
+            if (modal) {
+                modal.classList.toggle('hidden');
+                if (!modal.classList.contains('hidden')) {
+                    markAllNotificationsRead();
+                }
+            }
+        };
+
+        window.closeNotificationDrawer = function() {
+            const modal = $('#notifDrawerModal');
+            if (modal) modal.classList.add('hidden');
+        };
+
+        window.markAllNotificationsRead = async function() {
+            try {
+                await fetch('/api/notifications/mark-read', { method: 'POST' });
+                previousUnreadCount = 0;
+                const badge = $('#notifBadgeCount');
+                if (badge) badge.classList.add('hidden');
+                fetchAppNotifications();
+            } catch (e) {}
+        };
+
+        window.clearAllNotifications = async function() {
+            try {
+                await fetch('/api/notifications/clear', { method: 'POST' });
+                previousUnreadCount = 0;
+                const badge = $('#notifBadgeCount');
+                if (badge) badge.classList.add('hidden');
+                fetchAppNotifications();
+            } catch (e) {}
+        };
+
+        // Poll notifications every 3 seconds for real-time updates
+        setInterval(fetchAppNotifications, 3000);
+        document.addEventListener('DOMContentLoaded', fetchAppNotifications);
     </script>
     {% block scripts %}{% endblock %}
 </body>

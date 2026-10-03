@@ -42,6 +42,36 @@ except Exception:
 # Simple in-memory metadata for generated files
 file_metadata = {}
 
+# Real-time App Notifications Queue
+app_notifications = [
+    {
+        'id': 'notif_welcome',
+        'title': '🚀 Welcome to ResumeStudio!',
+        'message': 'Generate ATS-optimized resumes & manage LaTeX templates in real time.',
+        'type': 'info',
+        'action_url': None,
+        'time': datetime.now().strftime('%I:%M %p'),
+        'read': False,
+        'timestamp': time.time()
+    }
+]
+
+def push_app_notification(title: str, message: str, notif_type: str = 'info', action_url: str = None):
+    notif = {
+        'id': f"notif_{uuid.uuid4().hex[:8]}",
+        'title': title,
+        'message': message,
+        'type': notif_type,
+        'action_url': action_url,
+        'time': datetime.now().strftime('%I:%M %p'),
+        'read': False,
+        'timestamp': time.time()
+    }
+    app_notifications.insert(0, notif)
+    if len(app_notifications) > 50:
+        app_notifications.pop()
+    return notif
+
 DEFAULT_LATEX_TEMPLATE = r"""\documentclass[10pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[margin=0.5in]{geometry}
@@ -745,6 +775,12 @@ STRICT TASK:
         pdf_response = convert_latex_to_pdf(latex_code)
 
         if isinstance(pdf_response, dict) and pdf_response.get('status') == 'success':
+            push_app_notification(
+                title="✨ ATS Resume Generated!",
+                message="Your customized ATS-optimized LaTeX resume was successfully generated.",
+                notif_type="success",
+                action_url=pdf_response['download_url']
+            )
             return jsonify({
                 'success': True,
                 'latex_code': latex_code,
@@ -757,6 +793,11 @@ STRICT TASK:
                 'message': 'PDF generated successfully!'
             })
         else:
+            push_app_notification(
+                title="📝 LaTeX Resume Created",
+                message="LaTeX code generated successfully for your target job description.",
+                notif_type="info"
+            )
             return jsonify({
                 'success': True,
                 'latex_code': latex_code,
@@ -873,6 +914,12 @@ def convert_pdf_to_latex_route():
         pdf_response = convert_latex_to_pdf(latex_code)
 
         if isinstance(pdf_response, dict) and pdf_response.get('status') == 'success':
+            push_app_notification(
+                title="📄 Document Converted to LaTeX!",
+                message=f"Resume template '{candidate_name or 'Converted'}' saved to your LaTeX Library.",
+                notif_type="success",
+                action_url=pdf_response['download_url']
+            )
             return jsonify({
                 'success': True,
                 'latex_code': latex_code,
@@ -885,6 +932,11 @@ def convert_pdf_to_latex_route():
                 'message': 'PDF converted to LaTeX successfully!'
             })
         else:
+            push_app_notification(
+                title="📝 Document Converted to LaTeX Code",
+                message="LaTeX code extracted and saved to LaTeX Library.",
+                notif_type="info"
+            )
             return jsonify({
                 'success': True,
                 'latex_code': latex_code,
@@ -895,6 +947,32 @@ def convert_pdf_to_latex_route():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+
+# ========= App Notifications API ========= #
+
+@app.route('/api/notifications', methods=['GET'])
+def get_notifications_api():
+    unread_count = sum(1 for n in app_notifications if not n.get('read'))
+    return jsonify({
+        'success': True,
+        'notifications': app_notifications,
+        'unread_count': unread_count
+    })
+
+
+@app.route('/api/notifications/mark-read', methods=['POST'])
+def mark_notifications_read_api():
+    for n in app_notifications:
+        n['read'] = True
+    return jsonify({'success': True, 'unread_count': 0})
+
+
+@app.route('/api/notifications/clear', methods=['POST'])
+def clear_notifications_api():
+    global app_notifications
+    app_notifications = []
+    return jsonify({'success': True, 'notifications': [], 'unread_count': 0})
 
 
 @app.route('/compile-template', methods=['POST'])
