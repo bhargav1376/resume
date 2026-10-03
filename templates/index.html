@@ -162,8 +162,8 @@
         }
 
         .feature-pill {
-            font-size: 8px;
-            padding: 4px 11px;
+            font-size: 7.5px;
+            padding: 4px 10px;
         }
 
         .feature-pill svg {
@@ -1034,7 +1034,7 @@
                     downloadPdfBtn.href = currentPdfDataUrl || currentPdfUrl;
                     downloadPdfBtn.style.display = 'inline-flex';
                 }
-                
+
                 let titleText = 'Generated ATS Resume';
                 const pTitle = document.getElementById('resultPanelTitle');
                 if (pTitle && pTitle.textContent) {
@@ -1434,7 +1434,7 @@
             try {
                 delete stateObj.pdf_data_url;
                 localStorage.setItem('resume_studio_active_generated', JSON.stringify(stateObj));
-            } catch (err) {}
+            } catch (err) { }
         }
     }
 
