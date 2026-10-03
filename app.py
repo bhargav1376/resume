@@ -1011,6 +1011,23 @@ def serve_sw():
     return send_from_directory('static', 'sw.js', mimetype='application/javascript')
 
 
+@app.route('/apple-touch-icon.png')
+@app.route('/apple-touch-icon-precomposed.png')
+def serve_apple_touch_icon():
+    return send_from_directory('static', 'apple-touch-icon.png', mimetype='image/png')
+
+
+@app.route('/favicon.ico')
+@app.route('/favicon.svg')
+def serve_favicon():
+    return send_from_directory('static', 'icon.svg', mimetype='image/svg+xml')
+
+
+@app.route('/static/<path:filename>')
+def serve_static(filename):
+    return send_from_directory('static', filename)
+
+
 @app.after_request
 def add_security_headers(response):
     response.headers['X-Content-Type-Options'] = 'nosniff'
